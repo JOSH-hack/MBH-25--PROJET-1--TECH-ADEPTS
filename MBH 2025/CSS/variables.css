@@ -1,0 +1,38 @@
+:root {
+    /*LAYOUT*/
+     --mobile: 375px;
+     --desktop: 1440px;
+    /*COLORS*/
+
+    /*PRIMARY colors */
+    --marine-blue: hsl(213, 96%, 18%) ;
+    --dark-blue-intro: hsl(217, 28%, 15%); /* Couleur de fond pour le header et le formulaire d'inscription */
+    --marine-blue-hover: hsl(213, 83%, 25%);
+    --purplish-blue: hsl(243, 100%, 62%);
+    --pastel-blue: hsl(228, 100%, 84%);
+    --light-blue: hsl(206, 94%, 87%);
+    --cyan: hsl(176, 68%, 64%); /*  */
+    --blue: hsl(198, 60%, 50%); /*  */
+    --light-red: hsl(0, 100%, 63%); /* Rouge clair pour les erreurs */
+    /* Neutral colors */
+    --magnolia: hsl(216, 64%, 80%);/* Blanc pour les liens*/
+    --alabaster: hsla(229, 32%, 90%, 0.879);
+    --white: hsl(0, 0%, 100%); /* Blanc */
+    --dark-white: #b3b3b3; /* Blanc pour les textes secondaires */
+    --white-p: #e7e7e7; /* Blanc pour les paragraphes */
+
+    /* Typography */
+
+        /* Body Copy */
+    --h-size-1 : 32px; /* H1 */
+    --h-size-2 : 24px; /* H2 */
+    --h-size-3 : 20px; /* H3 */
+    --p-size : 16px; /* Paragraphes */
+
+        /* Font */
+
+    --family-all : "Ubuntu", sans-serif;
+    --light-weigh: 400 ;
+    --normal-weight: 500 ;
+    --bold-weight: 700;
+}

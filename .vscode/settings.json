@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.minimumContrastRatio": 21,
+    "editor.fontFamily": "\"Comic sans Ms\", sans-serif",
+    "diffEditor.experimental.useTrueInlineView": true
+}

@@ -1,0 +1,143 @@
+CREATE DATABASE OriJob;
+USE OriJob;
+
+-- Utilisateurs
+CREATE TABLE utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    mot_de_passe VARCHAR(255),
+    type ENUM('mentor', 'apprenant') NOT NULL,
+    competences TEXT,
+    objectifs TEXT,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Quiz d’orientation
+CREATE TABLE quiz (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(100),
+    description TEXT
+);
+
+CREATE TABLE questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    quiz_id INT,
+    question TEXT,
+    type_question ENUM('choix_multiple', 'text') DEFAULT 'choix_multiple',
+    FOREIGN KEY (quiz_id) REFERENCES quiz(id) ON DELETE CASCADE
+);
+
+CREATE TABLE reponses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question_id INT,
+    texte VARCHAR(255),
+    est_correct BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE resultats_quiz (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT,
+    quiz_id INT,
+    resultat TEXT,
+    date_passage TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id),
+    FOREIGN KEY (quiz_id) REFERENCES quiz(id)
+);
+
+-- Modules de formation
+CREATE TABLE modules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255),
+    description TEXT,
+    url_video TEXT,
+    document_pdf TEXT
+);
+
+-- Progression de l'apprenant
+CREATE TABLE progression (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT,
+    module_id INT,
+    pourcentage FLOAT DEFAULT 0,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id),
+    FOREIGN KEY (module_id) REFERENCES modules(id)
+);
+
+-- Certifications
+CREATE TABLE certificats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT,
+    module_id INT,
+    url_certificat TEXT,
+    date_obtention DATE,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id),
+    FOREIGN KEY (module_id) REFERENCES modules(id)
+);
+
+-- Portfolios
+CREATE TABLE portfolio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT,
+    titre_projet VARCHAR(255),
+    description TEXT,
+    url_projet TEXT,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+);
+
+-- Système de mentorat
+CREATE TABLE mentorat (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mentor_id INT,
+    apprenant_id INT,
+    statut ENUM('en_attente', 'accepte', 'termine') DEFAULT 'en_attente',
+    FOREIGN KEY (mentor_id) REFERENCES utilisateurs(id),
+    FOREIGN KEY (apprenant_id) REFERENCES utilisateurs(id)
+);
+
+CREATE TABLE rdv (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mentorat_id INT,
+    date_heure DATETIME,
+    sujet TEXT,
+    FOREIGN KEY (mentorat_id) REFERENCES mentorat(id)
+);
+
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    message TEXT,
+    date_envoi TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES utilisateurs(id),
+    FOREIGN KEY (receiver_id) REFERENCES utilisateurs(id)
+);
+
+-- Forum communautaire
+CREATE TABLE forum_topics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255),
+    categorie VARCHAR(100),
+    utilisateur_id INT,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+);
+
+CREATE TABLE forum_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    topic_id INT,
+    utilisateur_id INT,
+    message TEXT,
+    date_post TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (topic_id) REFERENCES forum_topics(id),
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+);
+
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    message_id INT,
+    utilisateur_id INT,
+    FOREIGN KEY (message_id) REFERENCES forum_messages(id),
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+);

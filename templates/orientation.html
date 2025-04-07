@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OriJob - Orientation</title>
+  <link rel="icon" href="../static/images/logo.png">
+<link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/orientation.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 60px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .result {
+      background-color: #f8f9fa;
+      border-left: 5px solid #007bff;
+      padding: 15px;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top px-4">
+    <a class="navbar-brand" href="#"><img src="../static/images/logo.png"> OriJob</a>
+</nav>
+
+<div class="container">
+  <div class="text-center my-5">
+    <h1>Test d’orientation</h1>
+    <p>Réponds aux questions suivantes pour découvrir les métiers faits pour toi.</p>
+  </div>
+
+  <form id="quizForm">
+    <div class="question">
+      <label for="q1" class="form-label">Quel type d’activité préfères-tu ?</label>
+      <select class="form-select" id="q1">
+        <option value="">Choisir...</option>
+        <option value="informatique">Créer des sites, coder, résoudre des bugs</option>
+        <option value="santé">Aider les gens, travailler dans la santé</option>
+        <option value="business">Vendre, négocier, entreprendre</option>
+        <option value="art">Créer, dessiner, jouer, imaginer</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label for="q2" class="form-label">Quelle matière préfères-tu ?</label>
+      <select class="form-select" id="q2">
+        <option value="">Choisir...</option>
+        <option value="math">Mathématiques</option>
+        <option value="bio">Biologie</option>
+        <option value="eco">Économie</option>
+        <option value="lettres">Lettres / Arts</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label for="q3" class="form-label">Quel environnement préfères-tu ?</label>
+      <select class="form-select" id="q3">
+        <option value="">Choisir...</option>
+        <option value="bureau">Bureau / ordinateur</option>
+        <option value="hopital">Hôpital / aide aux personnes</option>
+        <option value="terrain">Sur le terrain / en déplacement</option>
+        <option value="studio">Studio / espace créatif</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label for="q4" class="form-label">Préféres-tu travailler seul ou en équipe ?</label>
+      <select class="form-select" id="q4">
+        <option value="">Choisir...</option>
+        <option value="seul">Seul</option>
+        <option value="équipe">En équipe</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label for="q5" class="form-label">Quel rythme de travail te convient le mieux ?</label>
+      <select class="form-select" id="q5">
+        <option value="">Choisir...</option>
+        <option value="stable">Stable, prévisible</option>
+        <option value="dynamique">Dynamique, varié</option>
+      </select>
+    </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-primary mt-3" onclick="showResults()">Voir mes résultats</button>
+    </div>
+  </form>
+
+  <div id="resultSection" class="result">
+    <h4>Métiers suggérés :</h4>
+    <ul id="resultsList"></ul>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="jobModal" tabindex="-1" aria-labelledby="jobModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="jobModalLabel">Fiche métier</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="jobModalBody">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const jobDetails = {
+    "Développeur web": "Conçoit des sites et applications web. Requiert rigueur et créativité.",
+    "Analyste de données": "Transforme les données en informations utiles pour l’entreprise.",
+    "Ingénieur logiciel": "Développe des programmes et logiciels complexes.",
+    "Infirmier(ère)": "Soigne les patients et assiste les médecins.",
+    "Médecin": "Diagnostique et soigne les maladies.",
+    "Assistant médical": "Aide le personnel de santé dans ses tâches.",
+    "Commercial(e)": "Prospecte, négocie et vend des produits ou services.",
+    "Chef de projet": "Gère des projets du début à la fin avec des équipes.",
+    "Entrepreneur": "Crée et développe sa propre activité.",
+    "Designer graphique": "Crée des visuels pour communiquer des messages.",
+    "Musicien": "Crée ou interprète de la musique.",
+    "Acteur / Actrice": "Joue des rôles dans des films ou pièces de théâtre."
+  };
+
+  const jobScores = {
+    "Développeur web": 0,
+    "Analyste de données": 0,
+    "Ingénieur logiciel": 0,
+    "Infirmier(ère)": 0,
+    "Médecin": 0,
+    "Assistant médical": 0,
+    "Commercial(e)": 0,
+    "Chef de projet": 0,
+    "Entrepreneur": 0,
+    "Designer graphique": 0,
+    "Musicien": 0,
+    "Acteur / Actrice": 0
+  };
+
+  function showResults() {
+    const q1 = document.getElementById('q1').value;
+    const q2 = document.getElementById('q2').value;
+    const q3 = document.getElementById('q3').value;
+    const q4 = document.getElementById('q4').value;
+    const q5 = document.getElementById('q5').value;
+
+    const results = document.getElementById('resultsList');
+    const section = document.getElementById('resultSection');
+    results.innerHTML = '';
+    section.style.display = 'block';
+
+    for (let job in jobScores) jobScores[job] = 0;
+
+    if (q1 === 'informatique') {
+      jobScores["Développeur web"] += 2;
+      jobScores["Ingénieur logiciel"] += 2;
+      jobScores["Analyste de données"] += 1;
+    }
+    if (q2 === 'math') {
+      jobScores["Analyste de données"] += 2;
+      jobScores["Ingénieur logiciel"] += 1;
+    }
+    if (q3 === 'bureau') {
+      jobScores["Développeur web"] += 2;
+      jobScores["Analyste de données"] += 1;
+    }
+
+    if (q1 === 'santé') {
+      jobScores["Médecin"] += 2;
+      jobScores["Infirmier(ère)"] += 2;
+      jobScores["Assistant médical"] += 1;
+    }
+    if (q2 === 'bio') {
+      jobScores["Médecin"] += 2;
+      jobScores["Infirmier(ère)"] += 1;
+    }
+    if (q3 === 'hopital') {
+      jobScores["Infirmier(ère)"] += 2;
+      jobScores["Assistant médical"] += 1;
+    }
+
+    if (q1 === 'business') {
+      jobScores["Commercial(e)"] += 2;
+      jobScores["Entrepreneur"] += 2;
+    }
+    if (q2 === 'eco') {
+      jobScores["Chef de projet"] += 1;
+      jobScores["Entrepreneur"] += 1;
+    }
+    if (q3 === 'terrain') {
+      jobScores["Commercial(e)"] += 2;
+      jobScores["Entrepreneur"] += 1;
+    }
+
+    if (q1 === 'art') {
+      jobScores["Designer graphique"] += 2;
+      jobScores["Musicien"] += 2;
+      jobScores["Acteur / Actrice"] += 1;
+    }
+    if (q2 === 'lettres') {
+      jobScores["Acteur / Actrice"] += 2;
+      jobScores["Designer graphique"] += 1;
+    }
+    if (q3 === 'studio') {
+      jobScores["Musicien"] += 2;
+      jobScores["Designer graphique"] += 1;
+    }
+
+    if (q4 === 'équipe') {
+      jobScores["Chef de projet"] += 2;
+      jobScores["Infirmier(ère)"] += 1;
+      jobScores["Acteur / Actrice"] += 1;
+    } else if (q4 === 'seul') {
+      jobScores["Développeur web"] += 2;
+      jobScores["Designer graphique"] += 1;
+    }
+
+    if (q5 === 'dynamique') {
+      jobScores["Entrepreneur"] += 2;
+      jobScores["Commercial(e)"] += 1;
+      jobScores["Musicien"] += 1;
+    } else if (q5 === 'stable') {
+      jobScores["Analyste de données"] += 2;
+      jobScores["Assistant médical"] += 1;
+    }
+
+    const sortedJobs = Object.entries(jobScores)
+      .sort((a, b) => b[1] - a[1])
+      .filter(([job, score]) => score > 0)
+      .slice(0, 5);
+
+    if (sortedJobs.length === 0) {
+      results.innerHTML = '<div class="alert alert-warning">Aucune suggestion trouvée. Réessaye !</div>';
+    } else {
+      sortedJobs.forEach(([job]) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-link';
+        btn.textContent = job;
+        btn.setAttribute('data-bs-toggle', 'modal');
+        btn.setAttribute('data-bs-target', '#jobModal');
+        btn.onclick = () => {
+          document.getElementById('jobModalLabel').textContent = job;
+          document.getElementById('jobModalBody').textContent = jobDetails[job] || 'Pas de description disponible.';
+        };
+        li.appendChild(btn);
+        results.appendChild(li);
+      });
+    }
+  }
+  
+  function openVideo(job) {
+    // Ouvrir la vidéo associée au métier
+    const videoSrc = jobVideos[job];
+    if (videoSrc) {
+      window.open(videoSrc, '_blank'); // Ouvre la vidéo dans un nouvel onglet
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -47,8 +47,8 @@
   font-style: italic;
 }
 body {
-    background: linear-gradient(135deg, #e6f0ff, #ffffff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url(../images/bg-2.jpg) no-repeat center center fixed;
+    background-size: cover;    font-family: var(--family-all);
     height: 100vh;
     margin: 0;
   }
@@ -59,28 +59,88 @@ body {
   }
   
   .login-card {
-    background-color: white;
-    max-width: 400px;
+    background-color: ;
+    font-size: 1.2rem;
+    max-width: 500px;
+    height: 600px;
     width: 100%;
-    border: 1px solid #dbeafe;
+    border: 4px solid var(--dark-white);
+    box-shadow: 0px 0px 20px 20px var(--marine-blue);
   }
   
   .login-card h2 {
     font-weight: 600;
+    font-size: var(--h-size-1);
+    padding-bottom: 50px;
+    color: var(--marine-blue);
   }
-  
+  .login-card .text-muted{
+    font-size: var(--p-size);
+    font-weight: 700;
+    color: var(--purplish-blue);
+    padding-bottom: 20px;
+  }
   .login-card .form-control {
     border-radius: 0.5rem;
+    border: 1px solid var(--dark-white);
+    padding: 10px;
+    font-size: var(--h-size-3);
+    font-weight: 500;
   }
   
   .login-card .btn-primary {
-    background-color: #0d6efd;
+    background-color: var(--marine-blue);
     border: none;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
   }
-  
+  .login-card .btn-primary::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 5px;
+    background: white;
+    transition: all 0.7s ease ;
+  }
   .login-card .btn-primary:hover {
-    background-color: #0b5ed7;
+    background-color: var(--marine-blue-hover);
+    transform: translateY(4px);
+    
   }
-  
+  .login-card .btn-primary:hover::after{
+    width: 100%;
+    left: 0;
+  }
+  form label {
+    font-size: var(--h-size-3);
+    font-weight: 900;
+    color: var(--marine-blue);
+  }
+  button{
+    text-decoration: none;
+    color: #ffd700 ;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    font-family: PlayFair Display, sans-serif;
+}
+button:hover{
+    color: white;
+}
+button::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 5px;
+    background: white;
+
+}
+button:hover::after{
+    width: 100%;
+    left: 0;
+}

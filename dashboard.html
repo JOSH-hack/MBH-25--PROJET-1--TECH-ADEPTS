@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="formation, cours, en ligne, apprentissage, solution numérique">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../static/images/logo.png">
+    <title>OriJob - Dashboard</title>
+    <style>
+        /* Styles spécifiques au dashboard */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--alabaster);
+        }
+
+        /* Sidebar stylisé */
+        .sidebar {
+            width: 280px;
+            background-color: var(--marine-blue);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            margin: 5px 15px;
+            border-radius: 5px;
+            padding: 10px 15px;
+            transition: all 0.3s;
+            font-size: var(--p-size);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Contenu principal */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 30px;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        /* Cartes du dashboard */
+        .card-dashboard {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            background-color: white;
+        }
+
+        /* Adaptation mobile */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Animation du bouton menu mobile */
+        .navbar-toggler {
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="../static/images/logo.png" alt="Logo OriJob" style="width: 50px; border-radius: 50%; border: 2px solid white;">
+                <h5 class="mt-3 mb-0" style="font-family: var(--family-all); font-weight: var(--bold-weight);">OriJob</h5>
+                <small style="color: var(--pastel-blue);">Plateforme d'orientation</small>
+            </div>
+
+            <div class="sidebar-menu">
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="#">
+                        <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                    </a>
+                    <a class="nav-link" href="orientation.html">
+                        <i class="fas fa-compass"></i> Orientation
+                    </a>
+                    <a class="nav-link" href="formation.html">
+                        <i class="fas fa-book"></i> Formations
+                    </a>
+                    <a class="nav-link" href="#competences">
+                        <i class="fas fa-award"></i> Mes Compétences
+                    </a>
+                    <a class="nav-link" href="#mentorat">
+                        <i class="fas fa-handshake"></i> Mentorat
+                    </a>
+                    <a class="nav-link" href="#communaute">
+                        <i class="fas fa-users"></i> Communauté
+                    </a>
+                    <div style="padding: 10px 15px; margin-top: 20px;">
+                        <hr style="border-color: rgba(255,255,255,0.1);">
+                    </div>
+                    <a class="nav-link" href="#parametres">
+                        <i class="fas fa-cog"></i> Paramètres
+                    </a>
+                </nav>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Top Bar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white rounded shadow-sm mb-4">
+                <div class="container-fluid">
+                    <button class="navbar-toggler d-lg-none" type="button" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="d-flex align-items-center ms-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i> John Doe
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Orientation Section -->
+            <div class="card card-dashboard mb-4" id="orientation">
+                <div class="card-body">
+                    <h4 class="card-title" style="font-family: var(--family-all); font-weight: var(--bold-weight); color: var(--marine-blue);">
+                        <i class="fas fa-compass me-2"></i> Orientation professionnelle
+                    </h4>
+                    
+                    <div class="alert alert-info mt-3">
+                        <a href="orientation.html" class="btn btn-primary">Commencez le quiz</a>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5 style="font-family: var(--family-all); font-weight: var(--normal-weight);">Métiers recommandés</h5>
+                            <div class="list-group mt-3">
+                                <a href="#" class="list-group-item list-group-item-action border-start border-3 border-primary">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Développeur Fullstack</h6>
+                                        <span class="badge bg-primary rounded-pill">85%</span>
+                                    </div>
+                                    <p class="mb-1 small">Maîtrise des technologies front-end et back-end</p>
+                                    <small class="text-muted"><i class="fas fa-money-bill-wave me-1"></i> 1.5M - 3M FCFA/mois</small>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action border-start border-3 border-primary mt-2">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Data Analyst</h6>
+                                        <span class="badge bg-primary rounded-pill">78%</span>
+                                    </div>
+                                    <p class="mb-1 small">Analyse et interprétation de données</p>
+                                    <small class="text-muted"><i class="fas fa-money-bill-wave me-1"></i> 1.2M - 2.5M FCFA/mois</small>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 style="font-family: var(--family-all); font-weight: var(--normal-weight);">Compétences à développer</h5>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>JavaScript</span>
+                                    <small>65%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar" style="width: 65%; background-color: var(--cyan);"></div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Python</span>
+                                    <small>40%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar" style="width: 40%; background-color: var(--blue);"></div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Gestion de projet</span>
+                                    <small>55%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar" style="width: 55%; background-color: var(--purplish-blue);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formations Section -->
+            <div class="card card-dashboard mb-4" id="formations">
+                <div class="card-body">
+                    <h4 class="card-title" style="font-family: var(--family-all); font-weight: var(--bold-weight); color: var(--marine-blue);">
+                        <i class="fas fa-book me-2"></i> Mes formations en cours
+                    </h4>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="Formation" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-family: var(--family-all); font-weight: var(--normal-weight);">Développement Web Moderne</h5>
+                                    <p class="card-text small text-muted">Apprenez HTML, CSS et JavaScript à travers des projets concrets.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Débutant</span>
+                                        <small class="text-muted"><i class="fas fa-clock me-1"></i> 12h</small>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="progress w-75" style="height: 6px;">
+                                            <div class="progress-bar" style="width: 45%; background-color: var(--secondary);"></div>
+                                        </div>
+                                        <span class="small">45%</span>
+                                    </div>
+                                    <button class="btn btn-primary w-100 mt-2" style="background-color: var(--marine-blue); border: none;">Continuer</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="Formation" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-family: var(--family-all); font-weight: var(--normal-weight);">Introduction à Python</h5>
+                                    <p class="card-text small text-muted">Découvrez les bases de la programmation avec Python.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Débutant</span>
+                                        <small class="text-muted"><i class="fas fa-clock me-1"></i> 8h</small>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="progress w-75" style="height: 6px;">
+                                            <div class="progress-bar" style="width: 30%; background-color: var(--secondary);"></div>
+                                        </div>
+                                        <span class="small">30%</span>
+                                    </div>
+                                    <button class="btn btn-primary w-100 mt-2" style="background-color: var(--marine-blue); border: none;">Continuer</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 200px;">
+                                    <i class="fas fa-plus-circle text-muted mb-2" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title" style="font-family: var(--family-all); font-weight: var(--normal-weight);">Nouvelle formation</h5>
+                                    <p class="card-text small text-muted">Découvrez nos autres formations</p>
+                                    <button class="btn btn-outline-primary">Explorer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.textContent = document.body.classList.contains('dark-mode') ? 'Mode clair' : 'Mode sombre';
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            });
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = 'Mode clair';
+            }
+        }
+    </script>
+</body>
+</html>

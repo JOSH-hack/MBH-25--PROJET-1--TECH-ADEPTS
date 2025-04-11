@@ -1,0 +1,82 @@
+
+:root {
+    --primary: #2A5C82;
+    --secondary: #27AE60;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Sidebar stylisé */
+.sidebar {
+    width: 280px;
+    background: var(--primary);
+    color: white;
+    position: fixed;
+    height: 100vh;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.8);
+    margin: 5px 15px;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: all 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-link i {
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+/* Contenu principal */
+.main-content {
+    margin-left: 280px;
+    flex: 1;
+    padding: 30px;
+    background: #f8f9fa;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* Pour les écrans petits */
+@media (max-width: 992px) {
+    .sidebar {
+        margin-left: -280px;
+    }
+    .sidebar.active {
+        margin-left: 0;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    .main-content.active {
+        margin-left: 280px;
+    }
+}
+
+/* Personnalisation Bootstrap */
+.bg-primary { background-color: var(--primary)!important; }
+.bg-secondary { background-color: var(--secondary)!important; }
+.btn-secondary { background-color: var(--secondary); border: none; }
+.border-success { border-color: var(--secondary)!important; }
+.text-success { color: var(--secondary)!important; }
